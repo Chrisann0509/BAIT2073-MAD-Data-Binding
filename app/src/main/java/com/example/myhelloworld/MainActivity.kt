@@ -1,11 +1,10 @@
 package com.example.myhelloworld
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
-import android.widget.Button
 import android.os.Bundle
-import android.widget.ImageView
-import android.widget.TextView
-
-import android.widget.Toast
+import android.view.View
+import android.view.inputmethod.InputMethodManager
+import android.widget.*
 
 class MainActivity : AppCompatActivity() {
     lateinit var diceImg:ImageView
@@ -13,15 +12,33 @@ class MainActivity : AppCompatActivity() {
     //var :value changeable
     //val: value unchangeable
     lateinit var numbText:TextView
+    lateinit var nameText: EditText
+    lateinit var playerNameText:TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //     diceImg=findViewById(R.id.diceImg)  - cannot put above setContentView cuz haven't prepare view
         setContentView(R.layout.activity_main)
         diceImg=findViewById(R.id.diceImg)
         numbText=findViewById(R.id.numberTxt)
+        nameText=findViewById(R.id.editPlayerNameET)
+        playerNameText=findViewById(R.id.playerName)
         val rollButton:Button=findViewById(R.id.rollBtn)
         //val rollButton=findViewById<Button>(R.id.rollBtn)
         rollButton.setOnClickListener{rollDice()}  //prepare layout
+        val updateBtn:Button=findViewById(R.id.updateButton)
+        updateBtn.setOnClickListener{updateName(it)}
+    }
+
+    private fun updateName(view: View){
+
+        playerNameText.text=nameText.text
+        nameText.text.clear()
+        nameText.clearFocus()
+
+        val imm=getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken,0) //stop keyboard
+
     }
 
     private fun rollDice(){
